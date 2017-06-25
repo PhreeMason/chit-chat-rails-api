@@ -47,16 +47,20 @@ RSpec.describe User, type: :model do
     it 'hashes a password' do
       user = build(:user)
       user.save
-
+   
       expect(user.password_digest).not_to equal(user.password)
     end
   end
 
   
-  describe 'relationships' do
-  	it 'has many games'
+  # describe 'relationships' do
+  # 	it 'has many games' do
+      
+  #     user = build(:user)
+  #     user.build_game(status: )
+    
+  # 	end
 
-    it 'has many'
   	
   end
    
