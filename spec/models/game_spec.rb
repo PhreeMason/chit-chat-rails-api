@@ -9,6 +9,10 @@ RSpec.describe Game, type: :model do
   
   ]}
 
+  let(:game_with_users){
+    Game.make(users)
+  }
+
   describe 'initialize' do
     it "doesn't save without users" do
       game1 = Game.new
@@ -24,8 +28,11 @@ RSpec.describe Game, type: :model do
 
 
     it 'assigns each their order' do
+       game = game_with_users
+       game.save
 
-
+       expect(game.id).not_to equal(nil)
+       expect(game.users[0].my_tiles).not_to equal(nil)
     end
 
     it 'gives each player seven dominos' do
