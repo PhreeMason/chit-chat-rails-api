@@ -32,11 +32,11 @@ RSpec.describe Game, type: :model do
     it 'assigns each their order' do
 
        expect(game_with_users.id).not_to equal(nil)
-       expect(game_with_users.users[0].my_tiles).not_to equal(nil)
+       expect(game_with_users.game_players[2].player_order).to be <= 4 
     end
 
     it 'gives each player seven dominos' do
-      
+      expect(game_with_users.users[0].my_tiles).not_to equal(nil)
       expect(game_with_users.users[3].my_tiles.size).to equal(7)
     end
 

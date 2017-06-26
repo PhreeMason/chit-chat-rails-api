@@ -13,6 +13,7 @@ class Game < ApplicationRecord
 
   def distribute_tiles
   	shuffle_tiles
+    assign_order
   	self.game_players.each do |player| 
   		player.tiles = @tiles.slice(0, 7) 
   		player.save
@@ -20,6 +21,14 @@ class Game < ApplicationRecord
   	self.tiles_played = []
   	self.status = 'Active'
   	save
+  end
+
+  def assign_order
+    order  = [1,2,3,4].shuffle!
+    self.game_players.each do |player| 
+      player.player_order = order.pop 
+      player.save
+    end
   end
 
   def shuffle_tiles
