@@ -3,7 +3,7 @@ class Game < ApplicationRecord
 	has_many :game_players
 	has_many :users, through: :game_players
 	after_create :distribute_tiles
-	attr_accessor tiles 
+	attr_accessor :tiles 
  
   def self.make(users)
     game = Game.new
@@ -12,9 +12,14 @@ class Game < ApplicationRecord
   end
 
   def distribute_tiles
-  	@tiles.shuffle!
-  	self.game_players.each{|player| player.tiles = @tiles.slice(0, 6) }
+  	shuffle_tiles
+  	self.game_players.each do |player| 
+  		player.tiles = @tiles.slice(0, 7) 
+  		player.save
+  	end
   	self.tiles_played = []
+  	self.status = 'Active'
+  	save
   end
 
   def shuffle_tiles
@@ -27,6 +32,7 @@ class Game < ApplicationRecord
       end
       arr1.shift
     end
+    @tiles.shuffle!
   end
 
 end
