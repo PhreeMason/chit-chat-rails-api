@@ -10,7 +10,9 @@ RSpec.describe Game, type: :model do
   ]}
 
   let(:game_with_users){
-    Game.make(users)
+    game = Game.make(users)
+    game.save
+    game
   }
 
   describe 'initialize' do
@@ -22,30 +24,31 @@ RSpec.describe Game, type: :model do
       expect(game1.errors.full_messages).to eq([
       	"Users is the wrong length (should be 4 characters)" 
       ])
-      expect(game2.errors.full_messages).to eq([])
+      expect(game2.errors.full_messages).to be_empty
       expect(game2.valid?).to equal(true)
     end
 
 
     it 'assigns each their order' do
-       game = game_with_users
-       game.save
 
-       expect(game.id).not_to equal(nil)
-       expect(game.users[0].my_tiles).not_to equal(nil)
+       expect(game_with_users.id).not_to equal(nil)
+       expect(game_with_users.users[0].my_tiles).not_to equal(nil)
     end
 
     it 'gives each player seven dominos' do
-
+      
+      expect(game_with_users.users[3].my_tiles.size).to equal(7)
     end
 
     it 'has an empty array of tiles played' do
-      
+
+      expect(game_with_users.tiles_played).to be_empty
 
     end
 
     it 'has a status of active' do
 
+      expect(game_with_users.status).to eq('Active')
     end
 
   end
