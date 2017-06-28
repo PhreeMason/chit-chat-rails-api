@@ -46,8 +46,9 @@ RSpec.describe Game, type: :model do
 
     end
 
-    it 'has a status of active' do
+    it 'has a status of active and current turn is 1' do
 
+      expect(game_with_users.turn).to eq(1)
       expect(game_with_users.status).to eq('Active')
     end
 

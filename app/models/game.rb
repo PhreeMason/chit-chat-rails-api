@@ -20,6 +20,7 @@ class Game < ApplicationRecord
   	end
   	self.tiles_played = []
   	self.status = 'Active'
+    self.turn = 1
   	save
   end
 
