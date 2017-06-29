@@ -6,9 +6,4 @@ class User < ApplicationRecord
   has_many :game_players
   has_many :games, through: :game_players  
   
-
-  def my_tiles
-   self.game_players.last.tiles
-  end
-
 end

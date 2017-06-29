@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe GamePlayer, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  # describe 'initialize' do
+     
+  #   it 'is valid with an instance of game and an instance of user' do
+    	
+  #   end
+
+  # end
 end

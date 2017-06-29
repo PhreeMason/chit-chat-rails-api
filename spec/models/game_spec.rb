@@ -15,7 +15,12 @@ RSpec.describe Game, type: :model do
     game
   }
 
+  let(:players){
+    game_with_users.game_players
+  }
+
   describe 'initialize' do
+
     it "doesn't save without users" do
       game1 = Game.new
       game2 = Game.make(users)
@@ -36,8 +41,8 @@ RSpec.describe Game, type: :model do
     end
 
     it 'gives each player seven dominos' do
-      expect(game_with_users.users[0].my_tiles).not_to equal(nil)
-      expect(game_with_users.users[3].my_tiles.size).to equal(7)
+      expect(players[0].tiles).not_to equal(nil)
+      expect(players[3].tiles.size).to equal(7)
     end
 
     it 'has an empty array of tiles played' do
@@ -50,6 +55,21 @@ RSpec.describe Game, type: :model do
 
       expect(game_with_users.turn).to eq(1)
       expect(game_with_users.status).to eq('Active')
+    end
+
+  end
+
+  describe 'game play' do
+    player = players[0]
+    tiles = player.tiles
+    game_with_users.turn = player.player_order
+    player.game.play(tiles[0])
+    
+    it 'allows each player to make their move on their turn' do
+      
+      expect(game.tiles_played.length).to eq(1)
+      expect(game.tiles_played).to include(tiles[0])
+      expect(player.tiles).not_to include(tiles[]0)
     end
 
   end
