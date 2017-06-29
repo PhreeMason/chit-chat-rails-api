@@ -64,21 +64,13 @@ class Game < ApplicationRecord
   # def play(player, move)
   #   if self.turn % 4 == player.player_order && player.tiles.include(tile)
   #     if valid_right(move) || valid_left(move)
-  #       player.tiles   
+  #       player.tiles.delete(move.tile)   
   #     else
          
   #     end 
      
   #   end
   # end
-
-  def update_end_pieces(side, tile)
-    if side == 'right'
-      self.tiles_played.unshift(tile)
-    else
-      self.tiles_played << tile
-    end
-  end
 
   def swap_tile_around(tile)
     tile << tile[0]
@@ -87,22 +79,28 @@ class Game < ApplicationRecord
   end
 
   def valid_right(move)
+    if move.side == 'right'
+      return nil
+    end
     if move.tile[0] == self.tiles_played.flatten[-1]
-      update_end_pieces(move.side, move.tile)
+      self.tiles_played << tile
     elsif move.tile[1] == self.tiles_played.flatten[-1]
       move.tile = swap_tile_around(move.tile)
-      update_end_pieces(move.side, move.tile)
+      self.tiles_played << tile
     else 
       nil
     end
   end
 
   def valid_left(move)
+    if move.side == 'left'
+      return nil
+    end
     if move.tile[0] == self.tiles_played.flatten[0]
       move.tile = swap_tile_around(move.tile)
-      update_end_pieces(move.side, move.tile)
+      self.tiles_played.unshift(move.tile)
     elsif move.tile[1] == self.tiles_played.flatten[0]
-      update_end_pieces(move.side, move.tile)
+      self.tiles_played.unshift(move.tile)
     else 
       nil
     end
