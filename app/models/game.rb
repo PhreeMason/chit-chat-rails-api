@@ -45,7 +45,7 @@ class Game < ApplicationRecord
     @tiles.shuffle!
   end 
 
-  def play(player,tile)
+  def play(player,move)
     if self.turn % 4 == player.player_order && player.tiles.include(tile)
       self.tiles_played << tile
       player.tiles.delete(tile) 
@@ -53,13 +53,13 @@ class Game < ApplicationRecord
 
   end
 
-  def valid_move(tile)
+  def valid_move(move)
     
   end
 
   def all_tiles_good
     tiles = @tiles.slice!(0, 7)
-    while good_tiles(tiles) > 3
+    until good_tiles(tiles) < 5
       @tiles+= tiles
       @tiles.shuffle
       tiles = @tiles.slice!(0, 7)
@@ -71,15 +71,40 @@ class Game < ApplicationRecord
     tiles.select{ |tile| tile[0] == tile[1] }.size
   end
 
-  # def update_state(tile)
-  #   if self.end_pieces.empty?
-  #     self.end_pieces = tile
+  def update_end_pieces(side, tile)
+    if side == 'right'
+      self.tiles_played.unshift(tile)
+    else
+      self.tiles_played << tile
+    end
+  end
 
-  #   else
-  #     7
+  def swap_tile_around(tile)
+    tile << tile[0]
+    tile.delete_at(0)
+    tile
+  end
 
-  #   end 
-    
-  # end
+  def valid_right(move)
+    if move.tile[0] == self.tiles_played.flatten[-1]}
+      update_end_pieces(move.side, move.tile)
+    elsif move.tile[1] == self.tiles_played.flatten[-1]}
+      move.tile = swap_tile_around(move.tile)
+      update_end_pieces(move.side, move.tile)
+    else 
+      nil
+    end
+  end
+
+  def valid_left(move)
+    if move.tile[0] == self.tiles_played.flatten[0]}
+      move.tile = swap_tile_around(move.tile)
+      update_end_pieces(move.side, move.tile)
+    elsif move.tile[1] == self.tiles_played.flatten[0]}
+      update_end_pieces(move.side, move.tile)
+    else 
+      nil
+    end
+  end
 
 end
