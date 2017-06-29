@@ -62,12 +62,14 @@ class Game < ApplicationRecord
   end
 
   def play(player, move)
-    if self.turn % 4 == player.player_order && player.tiles.include?(move[:tile])
+    binding.pry
+    if correct_turn?(player) && player.tiles.include?(move[:tile])
       self.turn == 1 ? first_turn(player, move) : later_turn(player, move)
     end
   end
 
   def later_turn(player, move)
+    binding.pry
     if valid_right(move) || valid_left(move)
         player.tiles.delete(move[:tile])
         player.save
@@ -86,6 +88,7 @@ class Game < ApplicationRecord
   end
 
   def swap_tile_around(tile)
+    binding.pry
     tile << tile[0]
     tile.delete_at(0)
     tile
@@ -116,6 +119,14 @@ class Game < ApplicationRecord
       self.tiles_played.unshift(move[:tile])
     else 
       nil
+    end
+  end
+
+  def correct_turn(player)
+    if player.player_order == 4 && self.turn == 4
+      true
+    else
+      self.turn % 4 == player.player_order
     end
   end
 
