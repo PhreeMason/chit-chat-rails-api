@@ -18,6 +18,25 @@ RSpec.describe Game, type: :model do
   let(:players){
     game_with_users.game_players
   }
+  
+
+  let(:on_going_game){
+    players[0].tiles = [[2, 3], [5, 6], [1, 2], [2, 4], [0, 6], [1, 3]]
+    players[1].tiles = [[0, 5], [0, 0], [0, 3], [3, 5], [2, 5], [0, 4]]
+    players[2].tiles = [[4, 4], [4, 6], [2, 6], [0, 1], [1, 4], [5, 5]]
+    players[3].tiles = [[3, 3], [2, 2], [3, 6], [6, 6], [0, 2], [3, 4], [4, 5]]
+    
+    players[0].player_order = 1
+    players[1].player_order = 2
+    players[2].player_order = 3
+    players[3].player_order = 4
+    
+    game_with_users.tiles_played = [[5, 1],[1, 1],[1, 6]]
+    game_with_users.save_players
+    game_with_users.turn = 4
+    game_with_users.save
+    game_with_users
+  }
 
   describe 'initialize' do
 
@@ -70,6 +89,14 @@ RSpec.describe Game, type: :model do
       expect(game_with_users.tiles_played.length).to eq(1)
       expect(game_with_users.tiles_played).to include(tile)
       expect(player.tiles).not_to include(tile)
+    end
+
+    it 'only allows acurate moves' do
+      game = on_going_game
+      player = game.game_players[3]
+      game.play(player, {tile: player.tiles[-1], side: 'left'})
+
+      expect(game.tiles_played).to include([4,5])
     end
 
   end
