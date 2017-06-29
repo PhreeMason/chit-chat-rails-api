@@ -1,6 +1,7 @@
 class Game < ApplicationRecord
 	validates :users, length: { is: 4 }
 	has_many :game_players
+  has_many :users, through: :game_players
 	after_create :distribute_tiles
 	attr_accessor :tiles 
  
@@ -14,7 +15,7 @@ class Game < ApplicationRecord
   	shuffle_tiles
     assign_order
   	self.game_players.each do |player| 
-  		player.tiles = @tiles.slice(0, 7) 
+  		player.tiles = all_tiles_good 
   		player.save
   	end
   	self.tiles_played = []
@@ -42,11 +43,9 @@ class Game < ApplicationRecord
       arr1.shift
     end
     @tiles.shuffle!
-  end
+  end 
 
-  def 
-
-  def play({player,tile})
+  def play(player,tile)
     if self.turn % 4 == player.player_order && player.tiles.include(tile)
       self.tiles_played << tile
       player.tiles.delete(tile) 
@@ -58,12 +57,29 @@ class Game < ApplicationRecord
     
   end
 
-  def method_name
-    
+  def all_tiles_good
+    tiles = @tiles.slice!(0, 7)
+    while good_tiles(tiles) > 3
+      @tiles+= tiles
+      @tiles.shuffle
+      tiles = @tiles.slice!(0, 7)
+    end
+    tiles
   end
 
-  def update_state
-    
+  def good_tiles(tiles)
+    tiles.select{ |tile| tile[0] == tile[1] }.size
   end
+
+  # def update_state(tile)
+  #   if self.end_pieces.empty?
+  #     self.end_pieces = tile
+
+  #   else
+  #     7
+
+  #   end 
+    
+  # end
 
 end
