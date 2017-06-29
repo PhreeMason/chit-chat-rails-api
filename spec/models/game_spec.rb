@@ -61,16 +61,15 @@ RSpec.describe Game, type: :model do
 
   describe 'game play' do
     
-    it 'allows each player to make their move on their turn' do
+    it 'allows first player to make their move' do
       
-      player = players[0]
-      tiles = player.tiles
-      game_with_users.turn = player.player_order
-      player.game.play(tiles[0])
+      player = players.detect{|player| player.player_order == 1}
+      tile = player.tiles[0]
+      player.game.play(player, {tile: tile, side: 'right'})
 
-      expect(game.tiles_played.length).to eq(1)
-      expect(game.tiles_played).to include(tiles[0])
-      expect(player.tiles).not_to include(tiles[0])
+      expect(game_with_users.tiles_played.length).to eq(1)
+      expect(game_with_users.tiles_played).to include(tile)
+      expect(player.tiles).not_to include(tile)
     end
 
   end

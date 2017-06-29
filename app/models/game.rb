@@ -61,16 +61,29 @@ class Game < ApplicationRecord
     self.game_players.each {|player| player.save }
   end
 
-  # def play(player, move)
-  #   if self.turn % 4 == player.player_order && player.tiles.include(tile)
-  #     if valid_right(move) || valid_left(move)
-  #       player.tiles.delete(move.tile)   
-  #     else
-         
-  #     end 
-     
-  #   end
-  # end
+  def play(player, move)
+    if self.turn % 4 == player.player_order && player.tiles.include?(move[:tile])
+      self.turn == 1 ? first_turn(player, move) : later_turn(player, move)
+    end
+  end
+
+  def later_turn(player, move)
+    if valid_right(move) || valid_left(move)
+        player.tiles.delete(move[:tile])
+        player.save
+        self.turn ++
+        self.save   
+    else
+      return nil
+    end 
+  end
+
+  def first_turn(player, move)
+    self.tiles_played << move[:tile]
+    player.tiles.delete(move[:tile])
+    player.save
+    self.save
+  end
 
   def swap_tile_around(tile)
     tile << tile[0]
@@ -79,28 +92,28 @@ class Game < ApplicationRecord
   end
 
   def valid_right(move)
-    if move.side == 'right'
+    if move[:side] == 'right'
       return nil
     end
-    if move.tile[0] == self.tiles_played.flatten[-1]
-      self.tiles_played << tile
-    elsif move.tile[1] == self.tiles_played.flatten[-1]
-      move.tile = swap_tile_around(move.tile)
-      self.tiles_played << tile
+    if move[:tile][0] == self.tiles_played.flatten[-1]
+      self.tiles_played << move[:tile]
+    elsif move[:tile][1] == self.tiles_played.flatten[-1]
+      move[:tile] = swap_tile_around(move[:tile])
+      self.tiles_played << move[:tile]
     else 
       nil
     end
   end
 
   def valid_left(move)
-    if move.side == 'left'
+    if move[:side] == 'left'
       return nil
     end
-    if move.tile[0] == self.tiles_played.flatten[0]
-      move.tile = swap_tile_around(move.tile)
-      self.tiles_played.unshift(move.tile)
-    elsif move.tile[1] == self.tiles_played.flatten[0]
-      self.tiles_played.unshift(move.tile)
+    if move[:tile][0] == self.tiles_played.flatten[0]
+      move[:tile] = swap_tile_around(move[:tile])
+      self.tiles_played.unshift(move[:tile])
+    elsif move[:tile][1] == self.tiles_played.flatten[0]
+      self.tiles_played.unshift(move[:tile])
     else 
       nil
     end
