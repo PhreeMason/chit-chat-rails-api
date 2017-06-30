@@ -13,6 +13,8 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'puma'
 
+gem 'active_model_serializers'
+
 gem 'redis', '~> 3.0'
 
 gem 'rack-cors'
