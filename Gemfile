@@ -21,6 +21,8 @@ gem 'rack-cors'
 
 gem 'jwt'
 
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
