@@ -47,6 +47,10 @@ class GameLogic
     end
   end
 
+  def game_over?
+    blocked_game? || won_game?
+  end
+
   def correct_turn?
     if @player.player_order == 4 && @game.turn % 4 == 0
       true
