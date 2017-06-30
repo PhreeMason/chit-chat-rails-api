@@ -5,6 +5,7 @@ class Game < ApplicationRecord
 	after_create :distribute_tiles
 	attr_accessor :tiles 
  
+ # Game setup start
   def self.make(users)
     game = Game.new
     users.each{|user| game.users << user}
@@ -61,73 +62,37 @@ class Game < ApplicationRecord
     self.game_players.each {|player| player.save }
   end
 
+  # Game setup end
+
+  # Game play
+
   def play(player, move)
-    binding.pry
-    if correct_turn?(player) && player.tiles.include?(move[:tile])
-      self.turn == 1 ? first_turn(player, move) : later_turn(player, move)
+    logic = GameLogic.new(self, player, move)
+    if self.turn == 1
+      update_state(move)
+      update_classes(move, player)
+    elsif logic.valid_move?
+      update_state(logic.good_move)
+      update_classes(move, player)
+    else
+      return 'invalid move'
     end
   end
 
-  def later_turn(player, move)
-    binding.pry
-    if valid_right(move) || valid_left(move)
-        player.tiles.delete(move[:tile])
-        player.save
-        self.turn ++
-        self.save   
-    else
-      return nil
-    end 
+  def update_state(move)
+    case move[:side]
+    when 'right'
+      self.tiles_played << move[:tile]
+    when 'left'
+      self.tiles_played.unshift(move[:tile])
+    end
+    self.turn += 1
   end
 
-  def first_turn(player, move)
-    self.tiles_played << move[:tile]
+  def update_classes(move, player)
     player.tiles.delete(move[:tile])
-    player.save
+    save_players
     self.save
-  end
-
-  def swap_tile_around(tile)
-    binding.pry
-    tile << tile[0]
-    tile.delete_at(0)
-    tile
-  end
-
-  def valid_right(move)
-    if move[:side] == 'right'
-      return nil
-    end
-    if move[:tile][0] == self.tiles_played.flatten[-1]
-      self.tiles_played << move[:tile]
-    elsif move[:tile][1] == self.tiles_played.flatten[-1]
-      move[:tile] = swap_tile_around(move[:tile])
-      self.tiles_played << move[:tile]
-    else 
-      nil
-    end
-  end
-
-  def valid_left(move)
-    if move[:side] == 'left'
-      return nil
-    end
-    if move[:tile][0] == self.tiles_played.flatten[0]
-      move[:tile] = swap_tile_around(move[:tile])
-      self.tiles_played.unshift(move[:tile])
-    elsif move[:tile][1] == self.tiles_played.flatten[0]
-      self.tiles_played.unshift(move[:tile])
-    else 
-      nil
-    end
-  end
-
-  def correct_turn(player)
-    if player.player_order == 4 && self.turn == 4
-      true
-    else
-      self.turn % 4 == player.player_order
-    end
   end
 
 end
