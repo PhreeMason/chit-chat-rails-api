@@ -74,6 +74,7 @@ class Game < ApplicationRecord
     elsif logic.valid_move?
       update_state(logic.good_move)
       update_classes(move, player)
+      check_game_status(logic)
     else
       return 'invalid move'
     end
@@ -93,6 +94,12 @@ class Game < ApplicationRecord
     player.tiles.delete(move[:tile])
     save_players
     self.save
+  end
+
+  def check_game_status(logic)
+    if logic.game_over?
+      self.status = 'Complete'
+    end
   end
 
 end
