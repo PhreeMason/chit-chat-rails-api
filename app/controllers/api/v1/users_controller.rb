@@ -2,7 +2,10 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: @user
+      render json: {
+        user: @user.as_json(only: [:id, :username, :email]),
+        token: ::Auth.create_token(@user.id)
+      }
     else
       render json: { 
         errors: @user.errors 
