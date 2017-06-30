@@ -54,4 +54,17 @@ class GameLogic
       @game.turn % 4 == player.player_order
     end
   end
+
+  def blocked_game?
+  	end_tiles = [@game.tiles_played.flatten[0]]
+  	end_tiles << @game.tiles_played.flatten[-1]
+  	@game.reload.game_players.none? do |player| 
+  		player.tiles.flatten.include?(end_tiles[0]) || player.tiles.flatten.include?(end_tiles[1])
+  	end 
+  end
+
+  def won_game?
+  	@game.game_players.any? {|player| player.tiles.empty? }
+  end
+
 end
