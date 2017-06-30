@@ -17,6 +17,8 @@ gem 'redis', '~> 3.0'
 
 gem 'rack-cors'
 
+gem 'jwt'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
