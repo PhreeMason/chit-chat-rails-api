@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe Game, type: :model do
   let(:users) {[
     user1 = create(:user),
-    user2 = create(:user, email: 'email1@email.com', password: 'paswords'), 
-    user3 = create(:user, email: 'email2@email.com', password: 'paswords'),
-    user4 = create(:user, email: 'email3@email.com', password: 'paswords')
+    user2 = create(:user, username: 'bigbae1',  email: 'email1@email.com', password: 'paswords'), 
+    user3 = create(:user, username: 'bigbae2',  email: 'email2@email.com', password: 'paswords'),
+    user4 = create(:user, username: 'bigbae3',  email: 'email3@email.com', password: 'paswords')
   
   ]}
 

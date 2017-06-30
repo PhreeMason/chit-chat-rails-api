@@ -8,7 +8,8 @@ RSpec.describe User, type: :model do
 
       expect(user.valid?).to equal(false) 
       expect(user.errors.full_messages).to eq([
-      	"Password can't be blank", 
+      	"Password can't be blank",
+        "Username can't be blank", 
       	"Email can't be blank",
       	"Email is invalid"	
       ])
@@ -21,6 +22,7 @@ RSpec.describe User, type: :model do
 
       expect(user.valid?).to equal(false)
       expect(user.errors.full_messages).to eq([ 
+        "Username has already been taken",
       	"Email has already been taken"	
       ])
 
