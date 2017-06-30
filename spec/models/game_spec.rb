@@ -91,13 +91,15 @@ RSpec.describe Game, type: :model do
       expect(player.tiles).not_to include(tile)
     end
 
-    it 'only allows acurate moves' do
+    it 'allows acurate moves' do
       game = on_going_game
       player = game.game_players[3]
       game.play(player, {tile: player.tiles[-1], side: 'left'})
 
-      expect(game.tiles_played).to include([4,5])
+      expect(game.tiles_played).to include(['4','5'])
     end
+
+    it 'doesnt allow inaccurate moves'
 
   end
 
