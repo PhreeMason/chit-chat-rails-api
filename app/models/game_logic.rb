@@ -48,7 +48,7 @@ class GameLogic
   end
 
   def correct_turn?
-    if @player.player_order == 4 && @game.turn == 4
+    if @player.player_order == 4 && @game.turn % 4 == 0
       true
     else
       @game.turn % 4 == player.player_order
