@@ -6,7 +6,7 @@ RSpec.describe Game, type: :model do
     user2 = create(:user, username: 'bigbae1',  email: 'email1@email.com', password: 'paswords'), 
     user3 = create(:user, username: 'bigbae2',  email: 'email2@email.com', password: 'paswords'),
     user4 = create(:user, username: 'bigbae3',  email: 'email3@email.com', password: 'paswords')
-  
+    
   ]}
 
   let(:game_with_users){
