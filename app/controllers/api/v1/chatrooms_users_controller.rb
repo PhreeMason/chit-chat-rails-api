@@ -1,4 +1,4 @@
-class ChatroomUsersController < ApplicationController
+class Api::V1::ChatroomUsersController < ApplicationController
   before_action :authenticate_token!
   before_action :set_chatroom
 

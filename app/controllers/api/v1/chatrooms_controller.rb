@@ -1,5 +1,5 @@
-class ChatroomsController < ApplicationController
-  before_action :authenticate_token!
+class Api::V1::ChatroomsController < ApplicationController
+  # before_action :authenticate_token!
   
   def index
     chatrooms = Chatroom.all
