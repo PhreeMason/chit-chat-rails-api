@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
     def authenticate_token!
       if request.env["HTTP_AUTHORIZATION"]
         begin
-          token = request.env["HTTP_AUTHORIZATION"].split(" ").last
+          token = request.env["HTTP_AUTHORIZATION"]
           decoded = Auth.decode_token(token)
           @user_id = decoded[0]["user_id"] if decoded
         rescue JWT::DecodeError
