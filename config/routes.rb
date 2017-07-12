@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       post 'auth/refresh', to: 'auth#refresh'
       resources :chatrooms do
         resource :chatroom_users, only: [:create, :destroy]
-        resources :messages
+        resources :messages, only: [:create]
       end
     end
   end 
