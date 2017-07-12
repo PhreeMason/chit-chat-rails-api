@@ -1,10 +1,11 @@
-class MessagesController < ApplicationController
-  
+class Api::V1::MessagesController < ApplicationController
+  before_action :authenticate_token!
+
   def create
     message = Message.new(message_params)
     message.user = current_user
     if message.save
-      render json: message
+      render json: message.as_json(methods: :user_name)
     else 
       render json: { 
         errors: message.errors 
