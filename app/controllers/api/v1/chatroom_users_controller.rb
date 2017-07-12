@@ -4,7 +4,13 @@ class Api::V1::ChatroomUsersController < ApplicationController
 
   def create
     @chatroom_user = @chatroom.chatroom_users.where(user_id: current_user.id).first_or_create
-    render json: {message: 'You have joined the Chatroom'}
+       render json: {
+      chatroom: @chatroom.as_json(
+        {only: [:id, :name], 
+        :methods=> :user_ids, 
+        include: {messages: {except: [:updated_at], methods: :user_name}}}
+      ),
+    }
   end
   
   def destroy
