@@ -5,8 +5,9 @@ Rails.application.routes.draw do
     	resources :users, only: [:create]
       post '/auth', to: 'auth#login'
       post 'auth/refresh', to: 'auth#refresh'
-      resources :chatrooms, only: [:create, :index] do
-        resource :chatroom_users
+      resources :chatrooms do
+        resource :chatroom_users, only: [:create, :destroy]
+        resources :messages
       end
     end
   end 
