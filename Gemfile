@@ -21,6 +21,8 @@ gem 'jwt'
 
 gem 'dotenv-rails'
 
+gem 'jbuilder'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
