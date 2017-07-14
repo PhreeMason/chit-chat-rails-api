@@ -2,11 +2,10 @@ class Api::V1::ChatroomsController < ApplicationController
   before_action :authenticate_token!
   
   def index
-    chatrooms = Chatroom.all
-    render json: chatrooms.as_json(
-      {only: [:id, :name],
-      include: {chatroom_users: {only: [:user_id]}}}
-    )  
+    @chatrooms = Chatroom.all
   end
-
+  
+  def show
+    @chatroom = Chatroom.find[params.id]
+  end
 end
