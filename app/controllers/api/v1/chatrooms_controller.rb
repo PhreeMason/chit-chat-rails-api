@@ -3,6 +3,7 @@ class Api::V1::ChatroomsController < ApplicationController
   
   def index
     @chatrooms = Chatroom.all
+    @messages = DataFormatter.format_chatroom_messages(@chatrooms)
   end
   
   def show
