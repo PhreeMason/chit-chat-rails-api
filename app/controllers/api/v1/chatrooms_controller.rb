@@ -30,27 +30,28 @@ class Api::V1::ChatroomsController < ApplicationController
           errors: @chatroom.errors 
         }, status: 500 
       end  
-    end
-
-    def direct_message
-      @user2 = User.find_by(dm_params)
-      if @user2
-        name = "#{current_user.username}-#{@user2.username}"
-        @chatroom = Chatroom.new(name: name, private: true)
-        @chatroom.chatroom_users << current_user
-        @chatroom.chatroom_users << @user2
-        render @chatroom if @chatroom.save
-      else
-        render json: { 
-          errors: {error: 'User not found!'} 
-        }, status: 500 
-      end
-    end
-    
-    
+    end  
   end
 
+  def direct_message
+    @user2 = User.find_by(dm_params)
+    if @user2
+      name = "#{current_user.username}-#{@user2.username}"
+      @chatroom = Chatroom.new(name: name, private: true)
+      @chatroom.users << current_user
+      @chatroom.users << @user2
+      render @chatroom if @chatroom.save
+    else
+      render json: { 
+        errors: {error: 'User not found!'} 
+      }, status: 500 
+    end
+  end
+
+
+
   private
+
     def dm_params
       params.require(:user).permit(:username)
     end
