@@ -1,0 +1,9 @@
+json.user(
+  @user,
+  :id, 
+  :username,
+  :bio, 
+  :pic_link, 
+  :location
+) 
+json.token(Auth.create_token(user.id))
