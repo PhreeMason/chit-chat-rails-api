@@ -9,4 +9,15 @@ class Chatroom < ApplicationRecord
   def user_ids
     self.chatroom_users.map(&:user_id)
   end
+
+  def self.join_room(params, user)
+    chatroom = Chatroom.find_by(params)
+    if chatroom && !chatroom.private
+      chatroom.chatroom_users.where(user_id: user.id).first_or_create
+      return chatroom
+    elsif chatroom && chatroom.private && chatroom.users.include?(user)
+      return chatroom
+    end
+    false  
+  end
 end
