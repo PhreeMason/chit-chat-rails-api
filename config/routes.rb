@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       post '/auth', to: 'auth#login'
       post 'auth/refresh', to: 'auth#refresh'
       post 'chatrooms/direct_message', to: 'chatrooms#direct_message'
+      patch 'users', to: 'users#update'
+      get 'users/:username', to: 'users#show'
       resources :chatrooms do
         resource :chatroom_users, only: [:create, :destroy]
         resources :messages, only: [:create]

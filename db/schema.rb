@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170717064438) do
+ActiveRecord::Schema.define(version: 20170717191435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,9 @@ ActiveRecord::Schema.define(version: 20170717064438) do
     t.string "username"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "bio"
+    t.string "pic_link"
+    t.string "location"
   end
 
   add_foreign_key "chatroom_users", "chatrooms"
