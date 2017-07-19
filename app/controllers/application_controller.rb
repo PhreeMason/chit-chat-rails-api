@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
           decoded = Auth.decode_token(token)
           @user_id = decoded[0]["user_id"] if decoded
         rescue JWT::DecodeError
-          errors = {message: 'This token is not valid'} 
+          errors = {message: 'This token is not valid, please rephresh the page and try again'} 
         end
 
         if !current_user || !decoded || errors
