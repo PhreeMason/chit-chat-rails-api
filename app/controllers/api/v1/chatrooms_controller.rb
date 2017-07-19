@@ -12,25 +12,23 @@ class Api::V1::ChatroomsController < ApplicationController
   end
 
   def create
-    @chatroom = Chatroom.find_by(chatroom_params)
-    if @chatroom && !@chatroom.private
-      if @chatroom.users.include?(current_user)
-        render @chatroom
-      else
-        @chatroom.chatroom_users.where(user_id: current_user.id).first_or_create
-        @chatroom
-      end
+    chatroom = Chatroom.join_room(chatroom_params, current_user)
+    if chatroom
+      @chatrooms = current_user.chatrooms.all 
+      @messages = DataFormatter.format_chatroom_messages(@chatrooms)
     else
       @chatroom = Chatroom.new(chatroom_params)
+      @chatroom.users << current_user
       if @chatroom.save
-        @chatroom_user = @chatroom.chatroom_users.where(user_id: current_user.id).first_or_create 
-        @chatroom
+        @chatrooms = current_user.chatrooms.all 
+        @messages = DataFormatter.format_chatroom_messages(@chatrooms)
       else
         render json: { 
           errors: @chatroom.errors 
         }, status: 500 
       end  
-    end  
+    end 
+
   end
 
   def direct_message
