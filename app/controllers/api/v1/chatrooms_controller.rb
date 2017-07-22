@@ -2,47 +2,44 @@ class Api::V1::ChatroomsController < ApplicationController
   before_action :authenticate_token!
   
   def index
-    @chatrooms = current_user.chatrooms.all 
-    @messages = DataFormatter.format_chatroom_messages(@chatrooms)
-  end
-  
-  def show
-    @chatroom = Chatroom.find[params.id]
-    @messages = DataFormatter.format_chatroom_messages([@chatroom])
+    @chatrooms = current_user.chatrooms.all
   end
 
   def create
-    chatroom = Chatroom.join_room(chatroom_params, current_user)
-    if chatroom
-      @chatrooms = current_user.chatrooms.all 
-      @messages = DataFormatter.format_chatroom_messages(@chatrooms)
+    @chatroom = Chatroom.find_by(chatroom_params)
+    if @chatroom
+      @chatroom_user = @chatroom.chatroom_users.where(user_id: current_user.id).first_or_create
+      render @chatroom
     else
       @chatroom = Chatroom.new(chatroom_params)
       @chatroom.users << current_user
       if @chatroom.save
-        @chatrooms = current_user.chatrooms.all 
-        @messages = DataFormatter.format_chatroom_messages(@chatrooms)
+        render @chatroom 
       else
         render json: { 
           errors: @chatroom.errors 
         }, status: 500 
       end  
     end 
-
   end
 
   def direct_message
     @user2 = User.find_by(dm_params)
-    if @user2
-      name = "#{current_user.username}-#{@user2.username}"
+    @chatroom=current_user.chatrooms.where(private: true).detect{|room| room.users.include?(@user2)}
+    if @user2 && @chatroom
+      render @chatroom
+    else
+      name = SecureRandom.urlsafe_base64
       @chatroom = Chatroom.new(name: name, private: true)
       @chatroom.users << current_user
       @chatroom.users << @user2
-      render @chatroom if @chatroom.save
-    else
-      render json: { 
-        errors: {error: 'User not found!'} 
-      }, status: 500 
+      if @chatroom.save
+        render @chatroom
+      else
+        render json: { 
+          errors: @chatroom.errors 
+        }, status: 500 
+      end
     end
   end
 
