@@ -1,11 +1,9 @@
 development:
-  adapter: redis
-  url: redis://localhost:6379/1
+  adapter: async
 
 test:
   adapter: async
 
 production:
   adapter: redis
-  url: redis://localhost:6379/1
-  channel_prefix: api_production
+  url: redis://h:p8a9fe54cf7127cc212e54fa92ca9aa073957c0a967768fce7e5a0bb52bb512c4@ec2-54-208-76-96.compute-1.amazonaws.com:60159/

@@ -17,7 +17,8 @@ Rails.application.configure do
 
 
   config.log_tags = [ :request_id ]
-
+  
+  config.action_cable.allowed_request_origins = ['https://lit-ridge-65285.herokuapp.com/', 'https://vast-retreat-67077.herokuapp.com/']
 
   config.action_mailer.perform_caching = false
 
@@ -25,7 +26,7 @@ Rails.application.configure do
 
   config.active_support.deprecation = :notify
   
- # config.web_socket_server_url = "wss://lit-ridge-65285.herokuapp.com/cable"
+  config.web_socket_server_url = "wss://lit-ridge-65285.herokuapp.com/cable"
 
   config.log_formatter = ::Logger::Formatter.new
 
