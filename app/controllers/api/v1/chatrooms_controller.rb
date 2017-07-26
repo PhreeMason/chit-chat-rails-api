@@ -25,7 +25,7 @@ class Api::V1::ChatroomsController < ApplicationController
 
   def direct_message
     @user2 = User.find_by(dm_params)
-    @chatroom=current_user.chatrooms.where(private: true).detect{|room| room.users.include?(@user2)}
+    @chatroom = current_user.chatrooms.where(private: true).detect{|room| room.users.include?(@user2)}
     if @user2 && @chatroom
       render @chatroom
     else
