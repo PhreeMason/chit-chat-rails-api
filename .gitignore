@@ -12,6 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+./config/application.yml
 .byebug_history
 .env
+# Ignore application configuration
+/config/application.yml

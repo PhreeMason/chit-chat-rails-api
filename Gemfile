@@ -23,6 +23,8 @@ gem 'dotenv-rails'
 
 gem 'jbuilder'
 
+gem "figaro"
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
