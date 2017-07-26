@@ -18,7 +18,7 @@ Rails.application.configure do
 
   config.log_tags = [ :request_id ]
   
-  config.action_cable.allowed_request_origins = ['https://lit-ridge-65285.herokuapp.com/', 'https://vast-retreat-67077.herokuapp.com/']
+  config.action_cable.allowed_request_origins = ['https://lit-ridge-65285.herokuapp.com/', 'https://vast-retreat-67077.herokuapp.com']
 
   config.action_mailer.perform_caching = false
 
